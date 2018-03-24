@@ -1,57 +1,45 @@
-import React from 'react'
-import {
-  Platform,
-  StatusBar
-} from 'react-native'
-import {
-  StackNavigator
-} from 'react-navigation'
-import {
-  connect
-} from 'react-redux'
 
-import {
-  NAVIGATION_GOBACK
-} from '../actions/actionTypes'
-import InitialScreen from '../components/InitialScreen'
-import colors from '../lib/colors'
-import navigationHeader from '../lib/navigationHeader'
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import Register from '../components/Register';
+import Button from '../components/Button';
 
-const Navigator = (
-  StackNavigator({
-    Initial: {
-      screen: InitialScreen
-    }
-  })
-)
-
-Platform.select({
-  android: () => {
-    StatusBar.setBackgroundColor(colors.nerd)
-  },
-  ios: () => {
-    StatusBar.setBarStyle('light-content')
+class HomeScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Home Screen</Text>
+        <Button text="Go to Details" onPress={() => this.props.navigation.navigate('Details')} />
+        <Button text="Go to Register" onPress={() => this.props.navigation.navigate('Register')} />
+      </View>
+    );
   }
-})()
+}
 
-const Navigation = ({
-  goBack,
-  state
-}) => ( <
-  Navigator
-  // navigation={{ dispatch: () => { }, goBack, state}}
-  /
-  >
-)
+class DetailsScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Details Screen</Text>
+      </View>
+    );
+  }
+}
 
-const mapStateToProps = state => ({
-  state: state.navigation
-})
+const Navigator = StackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+    },
+    Details: {
+      screen: DetailsScreen,
+    },
+    Register: { screen: Register },
+  },
+  {
+    initialRouteName: 'Home',
+  },
+);
 
-const mapDispatchToProps = dispatch => ({
-  goBack: () => dispatch({
-    type: NAVIGATION_GOBACK
-  })
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation)
+export default Navigator;

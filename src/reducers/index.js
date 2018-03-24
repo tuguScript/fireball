@@ -1,8 +1,10 @@
-import { combineReducers } from 'redux'
 
-import navigation from './navigation'
+import { combineReducers } from 'redux';
+
+import navigation from './navigation.js';
 
 const reducers = combineReducers({
-navigation})
+  navigation,
+});
 
-export default reducers
+export default reducers;
