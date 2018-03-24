@@ -6,11 +6,11 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   View,
-  Button,
 } from 'react-native';
 import colors from '../lib/colors';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 import firebase from '../lib/firebase';
+import Button from '../components/Button';
 
 class Register extends React.Component {
   constructor(props) {
@@ -93,7 +93,7 @@ class Register extends React.Component {
                 />
               </View>
               {/* {this.renderNotice()} */}
-              <Button title="Register" onPress={this.register} />
+              <Button text="Register" onPress={this.register} />
             </View>
           </View>
         </TouchableWithoutFeedback>
