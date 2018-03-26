@@ -13,16 +13,6 @@ import colors from '../lib/colors';
 //   text: PropTypes.string.isRequired,
 // };
 
-const defaultProps = {
-  backgroundColor: 'gray',
-  block: false,
-  color: 'black',
-  disabled: false,
-  indicator: false,
-  onPress: () => {},
-  style: null,
-};
-
 const styles = StyleSheet.create({
   blockWidth: {
     alignSelf: 'stretch',
