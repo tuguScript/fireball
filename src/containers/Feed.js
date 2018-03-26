@@ -24,6 +24,7 @@ export default class Feed extends React.Component {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Home Screen</Text>
+        {/* <Button title="Go to Details" onPress={() => this.props.navigation.navigate('Details')} /> */}
         <Button text="Load user" onPress={() => this.loadUser()} />
         <Button text="Go to Details" onPress={() => this.props.navigation.navigate('Details')} />
         <Button text="Go to Register" onPress={() => this.props.navigation.navigate('Register')} />

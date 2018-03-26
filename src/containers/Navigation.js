@@ -10,11 +10,17 @@ import Feed from '../containers/Feed';
 import Challenge from '../containers/Challenge';
 import Games from '../containers/Games';
 import Profile from '../containers/Profile';
+import DetailsScreen from '../containers/Details';
+
+const FeedStack = StackNavigator({
+  Feed: { screen: Feed },
+  Details: { screen: DetailsScreen },
+});
 
 const Navigator = TabNavigator(
   {
     Feed: {
-      screen: Feed,
+      screen: FeedStack,
     },
     Clubs: {
       screen: Clubs,
@@ -48,8 +54,8 @@ const Navigator = TabNavigator(
       },
     }),
     tabBarOptions: {
-      activeTintColor: 'tomato',
-      inactiveTintColor: 'green',
+      activeTintColor: 'red',
+      inactiveTintColor: 'blue',
     },
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
@@ -57,7 +63,7 @@ const Navigator = TabNavigator(
     swipeEnabled: false,
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Clubs',
   },
 );
 
