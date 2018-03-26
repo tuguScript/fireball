@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
-import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
+import { StatusBar, ActivityIndicator, Platform, StyleSheet, Text, View } from 'react-native';
+import { SwitchNavigator, StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
 import Register from '../components/Register';
 import Login from '../components/Login';
 import firebase from '../lib/firebase';
@@ -11,13 +11,14 @@ import Challenge from '../containers/Challenge';
 import Games from '../containers/Games';
 import Profile from '../containers/Profile';
 import DetailsScreen from '../containers/Details';
+import AuthLoadingScreen from '../components/AuthLoadingScreen';
 
 const FeedStack = StackNavigator({
   Feed: { screen: Feed },
   Details: { screen: DetailsScreen },
 });
 
-const Navigator = TabNavigator(
+const AppStack = TabNavigator(
   {
     Feed: {
       screen: FeedStack,
@@ -67,4 +68,15 @@ const Navigator = TabNavigator(
   },
 );
 
-export default Navigator;
+const AuthStack = StackNavigator({ Login, Register });
+
+export default SwitchNavigator(
+  {
+    AuthLoading: AuthLoadingScreen,
+    App: AppStack,
+    Auth: AuthStack,
+  },
+  {
+    initialRouteName: 'AuthLoading',
+  },
+);

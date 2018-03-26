@@ -94,6 +94,7 @@ class Login extends React.Component {
               </View>
               {/* {this.renderNotice()} */}
               <Button text="Login" onPress={this.login} indicator={this.state.isLoading} />
+              <Button text="Register" onPress={() => this.props.navigation.navigate('Register')} />
             </View>
           </View>
         </TouchableWithoutFeedback>
