@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import colors from '../lib/colors';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
-import firebase from '../lib/firebase';
+import firebase, { provider, auth } from '../lib/firebase';
 import Button from '../components/Button';
 
 class Login extends React.Component {
@@ -43,9 +43,9 @@ class Login extends React.Component {
     console.log(this.state);
 
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
+      await auth.signInWithEmailAndPassword(email, password);
 
-      const currentUser = firebase.auth().currentUser;
+      const currentUser = auth.currentUser;
 
       //   await firebase.database().ref(`users/${currentUser.uid}`).set({ email, name: this.name });
 
@@ -55,6 +55,18 @@ class Login extends React.Component {
       console.warn(error.message);
       this.setIsLoading(false);
     }
+  }
+  signInWithGoogle() {
+    auth.signInWithPopup(provider).then(result => {
+      const currentUser = auth.currentUser;
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      // let token = result.credential.accessToken;
+      // const user = result.user;
+      // this.setState({
+      //   user,
+      //   token,
+      // });
+    });
   }
   render() {
     return (
@@ -93,6 +105,11 @@ class Login extends React.Component {
                 />
               </View>
               {/* {this.renderNotice()} */}
+              <Button
+                text="Google"
+                onPress={this.signInWithGoogle}
+                indicator={this.state.isLoading}
+              />
               <Button text="Login" onPress={this.login} indicator={this.state.isLoading} />
               <Button text="Register" onPress={() => this.props.navigation.navigate('Register')} />
             </View>
