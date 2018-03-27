@@ -6,11 +6,20 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import colors from '../lib/colors';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 import firebase from '../lib/firebase';
-import Button from '../components/Button';
+import {
+  RkButton,
+  RkText,
+  RkTextInput,
+  RkAvoidKeyboard,
+  RkStyleSheet,
+} from 'react-native-ui-kitten';
+import { RkTheme } from 'react-native-ui-kitten';
+import { scale, scaleModerate, scaleVertical } from '../lib/scale';
 
 class Register extends React.Component {
   constructor(props) {
@@ -58,116 +67,87 @@ class Register extends React.Component {
   }
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={60} style={styles.full}>
-        <TouchableWithoutFeedback onPress={dismissKeyboard} style={styles.full}>
-          <View style={styles.container}>
-            <View style={styles.headerContainer}>
-              <Text style={styles.title}>Title here</Text>
-              <Text style={styles.subTitle}>
-                {this.name}subTitle here
-                {'\n'}
-                lorem
-              </Text>
-            </View>
-            <Text style={styles.main}>main text</Text>
-            <View style={styles.formContainer}>
-              <View style={styles.inputContainer}>
-                <TextInput
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  blurOnSubmit={false}
-                  keyboardType="email-address"
-                  onChangeText={this.handleEmailChange}
-                  onSubmitEditing={this.focusPasswordInput}
-                  placeholder="email"
-                  ref={this.setEmailInput}
-                  returnKeyType="next"
-                  style={styles.input}
-                />
-                <TextInput
-                  onChangeText={this.handlePasswordChange}
-                  placeholder="password"
-                  ref={this.setPasswordInput}
-                  secureTextEntry
-                  style={styles.input}
-                />
-              </View>
-              {/* {this.renderNotice()} */}
-              <Button text="Register" onPress={this.register} indicator={this.state.isLoading} />
-            </View>
+      <RkAvoidKeyboard
+        style={styles.screen}
+        onStartShouldSetResponder={e => true}
+        onResponderRelease={e => Keyboard.dismiss()}
+      >
+        <View style={styles.header}>
+          {/* {renderIcon()} */}
+          <RkText rkType="light h1">Fireball</RkText>
+          <RkText rkType="logo h0">Tinder for table tennis players</RkText>
+        </View>
+        <View style={styles.content}>
+          <View>
+            <RkTextInput
+              rkType="rounded"
+              placeholder="E-mail"
+              onChangeText={this.handleEmailChange}
+              autoCorrect={false}
+              blurOnSubmit={false}
+              keyboardType="email-address"
+            />
+            <RkTextInput
+              rkType="rounded"
+              placeholder="Password"
+              onChangeText={this.handlePasswordChange}
+              secureTextEntry={true}
+            />
           </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+          <RkButton style={styles.LoginButton} onPress={() => this.register()}>
+            {this.state.isLoading ? (
+              <ActivityIndicator color={colors.white} style={[styles.centering]} />
+            ) : (
+              'Register'
+            )}
+          </RkButton>
+        </View>
+      </RkAvoidKeyboard>
     );
   }
 }
 
 export default Register;
 
-const styles = StyleSheet.create({
-  buttonContent: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  container: {
-    alignItems: 'stretch',
-    backgroundColor: 'whitesmoke',
+let styles = RkStyleSheet.create(theme => ({
+  screen: {
+    padding: scaleVertical(16),
     flex: 1,
+    justifyContent: 'space-between',
+    backgroundColor: theme.colors.screen.base,
+  },
+  image: {
+    height: scaleVertical(77),
+    resizeMode: 'contain',
+  },
+  header: {
+    paddingBottom: scaleVertical(10),
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  content: {
+    justifyContent: 'space-between',
+  },
+  LoginButton: {
+    marginBottom: scaleVertical(10),
+    marginHorizontal: '30%',
+  },
+  save: {
+    marginVertical: 20,
+  },
+  buttons: {
+    flexDirection: 'row',
+    marginBottom: scaleVertical(24),
+    marginHorizontal: 24,
     justifyContent: 'space-around',
-    paddingHorizontal: 60,
   },
-  formContainer: {
-    alignItems: 'center',
+  textRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
-  full: {
-    flex: 1,
+  button: {
+    borderColor: theme.colors.border.solid,
   },
-  headerContainer: {
-    alignItems: 'center',
-  },
-  icon: {
-    marginRight: 16,
-  },
-  input: {
-    backgroundColor: 'white',
-    borderColor: 'lightgray',
-    borderRadius: 5,
-    borderWidth: StyleSheet.hairlineWidth,
-    fontSize: 14.5,
-    height: 45,
-    margin: 5,
-    padding: 10,
-  },
-  inputContainer: {
-    alignItems: 'stretch',
-    alignSelf: 'stretch',
-  },
-  loginButton: {
-    backgroundColor: colors.deepNerd,
-  },
-  main: {
-    color: colors.nerd,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  notice: {
-    color: colors.nerd,
-    fontSize: 12,
-  },
-  registerButton: {
-    backgroundColor: colors.darkNerd,
-  },
-  subTitle: {
-    color: 'slategray',
-    fontSize: 13.5,
-    lineHeight: 20,
-    textAlign: 'center',
-  },
-  title: {
-    color: 'slategray',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-});
+  footer: {},
+}));

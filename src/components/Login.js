@@ -8,6 +8,7 @@ import {
   View,
   Image,
   Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 import colors from '../lib/colors';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
@@ -115,18 +116,13 @@ class Login extends React.Component {
               onChangeText={this.handlePasswordChange}
               secureTextEntry={true}
             />
-
-            {/* <GradientButton
-              style={styles.save}
-              rkType="large"
-              text="LOGIN"
-              onPress={() => {
-                this.props.navigation.goBack();
-              }}
-            /> */}
           </View>
-          <RkButton style={styles.LoginButton} onPress={this.login}>
-            Login
+          <RkButton style={styles.LoginButton} onPress={() => this.login()}>
+            {this.state.isLoading ? (
+              <ActivityIndicator color={colors.white} style={[styles.centering]} />
+            ) : (
+              'Login'
+            )}
           </RkButton>
           <View style={styles.buttons}>
             <RkButton style={styles.button} rkType="social">
