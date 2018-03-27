@@ -1,45 +1,83 @@
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { StatusBar, ActivityIndicator, Platform, StyleSheet, Text, View } from 'react-native';
+import { SwitchNavigator, StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
 import Register from '../components/Register';
-import Button from '../components/Button';
+import Login from '../components/Login';
+import firebase from '../lib/firebase';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Clubs from '../containers/Clubs';
+import Feed from '../containers/Feed';
+import Challenge from '../containers/Challenge';
+import Games from '../containers/Games';
+import Profile from '../containers/Profile';
+import DetailsScreen from '../containers/Details';
+import AuthLoadingScreen from '../components/AuthLoadingScreen';
 
-class HomeScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Home Screen</Text>
-        <Button text="Go to Details" onPress={() => this.props.navigation.navigate('Details')} />
-        <Button text="Go to Register" onPress={() => this.props.navigation.navigate('Register')} />
-      </View>
-    );
-  }
-}
+const FeedStack = StackNavigator({
+  Feed: { screen: Feed },
+  Details: { screen: DetailsScreen },
+});
 
-class DetailsScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Details Screen</Text>
-      </View>
-    );
-  }
-}
-
-const Navigator = StackNavigator(
+const AppStack = TabNavigator(
   {
-    Home: {
-      screen: HomeScreen,
+    Feed: {
+      screen: FeedStack,
     },
-    Details: {
-      screen: DetailsScreen,
+    Clubs: {
+      screen: Clubs,
     },
-    Register: { screen: Register },
+    Challenge: {
+      screen: Challenge,
+    },
+    Games: { screen: Games },
+    Profile: { screen: Profile },
   },
   {
-    initialRouteName: 'Home',
+    navigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, tintColor }) => {
+        const { routeName } = navigation.state;
+        let iconName;
+        if (routeName === 'Feed') {
+          iconName = `ios-paper${focused ? '' : '-outline'}`;
+        } else if (routeName === 'Clubs') {
+          iconName = `ios-people${focused ? '' : '-outline'}`;
+        } else if (routeName === 'Challenge') {
+          iconName = `ios-radio-button-on${focused ? '' : '-outline'}`;
+        } else if (routeName === 'Games') {
+          iconName = `ios-calendar${focused ? '' : '-outline'}`;
+        } else if (routeName === 'Profile') {
+          iconName = `ios-person${focused ? '' : '-outline'}`;
+        }
+
+        // You can return any component that you like here! We usually use an
+        // icon component from react-native-vector-icons
+        return <Ionicons name={iconName} size={25} color={tintColor} />;
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: 'red',
+      inactiveTintColor: 'blue',
+    },
+    tabBarComponent: TabBarBottom,
+    tabBarPosition: 'bottom',
+    animationEnabled: false,
+    swipeEnabled: false,
+  },
+  {
+    initialRouteName: 'Clubs',
   },
 );
 
-export default Navigator;
+const AuthStack = StackNavigator({ Login, Register });
+
+export default SwitchNavigator(
+  {
+    AuthLoading: AuthLoadingScreen,
+    App: AppStack,
+    Auth: AuthStack,
+  },
+  {
+    initialRouteName: 'AuthLoading',
+  },
+);

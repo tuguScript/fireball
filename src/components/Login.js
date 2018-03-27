@@ -9,13 +9,13 @@ import {
 } from 'react-native';
 import colors from '../lib/colors';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
-import firebase from '../lib/firebase';
+import firebase, { provider, auth } from '../lib/firebase';
 import Button from '../components/Button';
 
-class Register extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.register = this.register.bind(this);
+    this.login = this.login.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
@@ -23,6 +23,7 @@ class Register extends React.Component {
     email: '',
     password: '',
     isLoading: false,
+    displayName: '',
   };
   setIsLoading(isLoading) {
     this.setState({ isLoading });
@@ -34,18 +35,17 @@ class Register extends React.Component {
   handlePasswordChange(password) {
     this.setState({ password });
   }
-  async register() {
+
+  async login() {
     // const { resetToHome } = this.props;
     const { email, password } = this.state;
-    // const email = 'tuguscript@gmail.com';
-    // const password = '123456';
     this.setIsLoading(true);
     console.log(this.state);
 
     try {
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      await auth.signInWithEmailAndPassword(email, password);
 
-      const currentUser = firebase.auth().currentUser;
+      const currentUser = auth.currentUser;
 
       //   await firebase.database().ref(`users/${currentUser.uid}`).set({ email, name: this.name });
 
@@ -55,6 +55,18 @@ class Register extends React.Component {
       console.warn(error.message);
       this.setIsLoading(false);
     }
+  }
+  signInWithGoogle() {
+    auth.signInWithPopup(provider).then(result => {
+      const currentUser = auth.currentUser;
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      // let token = result.credential.accessToken;
+      // const user = result.user;
+      // this.setState({
+      //   user,
+      //   token,
+      // });
+    });
   }
   render() {
     return (
@@ -66,7 +78,7 @@ class Register extends React.Component {
               <Text style={styles.subTitle}>
                 {this.name}subTitle here
                 {'\n'}
-                lorem
+                {this.state.displayName}
               </Text>
             </View>
             <Text style={styles.main}>main text</Text>
@@ -93,7 +105,13 @@ class Register extends React.Component {
                 />
               </View>
               {/* {this.renderNotice()} */}
-              <Button text="Register" onPress={this.register} indicator={this.state.isLoading} />
+              <Button
+                text="Google"
+                onPress={this.signInWithGoogle}
+                indicator={this.state.isLoading}
+              />
+              <Button text="Login" onPress={this.login} indicator={this.state.isLoading} />
+              <Button text="Register" onPress={() => this.props.navigation.navigate('Register')} />
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -102,7 +120,7 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default Login;
 
 const styles = StyleSheet.create({
   buttonContent: {
