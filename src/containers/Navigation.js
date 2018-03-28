@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { StatusBar, ActivityIndicator, Platform, StyleSheet, Text, View } from 'react-native';
 import { SwitchNavigator, StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
