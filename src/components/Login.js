@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import colors from '../lib/colors';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
-import firebase, { provider, auth } from '../lib/firebase';
+import firebase, { provider, auth, FBprovider } from '../lib/firebase';
 import Button from '../components/Button';
 import {
   RkButton,
@@ -26,6 +26,7 @@ import {
 import { RkTheme } from 'react-native-ui-kitten';
 import { scale, scaleModerate, scaleVertical } from '../lib/scale';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FBSDK, { LoginManager, AccessToken } from 'react-native-fbsdk';
 
 class Login extends React.Component {
   constructor(props) {
@@ -49,6 +50,33 @@ class Login extends React.Component {
 
   handlePasswordChange(password) {
     this.setState({ password });
+  }
+
+  async fbAuth() {
+    LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(
+      function(result) {
+        if (result.isCancelled) {
+          console.log('Login was cancelled');
+        } else {
+          AccessToken.getCurrentAccessToken().then(data => {
+            const credential = FBprovider.FacebookAuthProvider.credential(data.accessToken);
+            console.log('end :62', data.accessToken);
+            firebase
+              .auth()
+              .signInWithCredential(credential)
+              .then(result => {
+                console.log('logged in succes');
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          });
+        }
+      },
+      function(error) {
+        console.log('Login failed with error: ' + error);
+      },
+    );
   }
 
   async login() {
@@ -124,6 +152,7 @@ class Login extends React.Component {
               'Login'
             )}
           </RkButton>
+
           <View style={styles.buttons}>
             <RkButton style={styles.button} rkType="social">
               <RkText rkType="awesome hero">
@@ -132,7 +161,12 @@ class Login extends React.Component {
             </RkButton>
             <RkButton style={styles.button} rkType="social">
               <RkText rkType="awesome hero">
-                <FontAwesome name={'facebook'} size={25} color={'white'} />
+                <FontAwesome
+                  name={'facebook'}
+                  size={25}
+                  color={'white'}
+                  onPress={this.fbAuth.bind(this)}
+                />
               </RkText>
             </RkButton>
             <RkButton style={styles.button} rkType="social">
