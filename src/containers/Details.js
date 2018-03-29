@@ -12,5 +12,5 @@ export default class DetailsScreen extends React.Component {
 }
 
 DetailsScreen.navigationOptions = {
-  title: 'hi',
+  title: 'this.props.id',
 };
