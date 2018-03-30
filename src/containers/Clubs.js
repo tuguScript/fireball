@@ -1,15 +1,53 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { RkButton } from 'react-native-ui-kitten';
+import Interactable from 'react-native-interactable';
 
 export default class Clubs extends React.Component {
   state = {};
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Clubs</Text>
-        <RkButton>Click me!</RkButton>
+      <View style={styles.container}>
+        <Interactable.View
+          key="first"
+          horizontalOnly={true}
+          snapPoints={[{ x: 360 }, { x: 0, damping: 0.5 }, { x: -360 }]}
+        >
+          <View style={styles.card} />
+        </Interactable.View>
+
+        <Interactable.View
+          key="second"
+          horizontalOnly={true}
+          snapPoints={[{ x: 360 }, { x: 0 }, { x: -360 }]}
+        >
+          <View style={styles.card} />
+        </Interactable.View>
+
+        <Interactable.View
+          key="third"
+          horizontalOnly={true}
+          snapPoints={[{ x: 360 }, { x: 0, damping: 0.8 }, { x: -360 }]}
+        >
+          <View style={styles.card} />
+        </Interactable.View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  card: {
+    width: 300,
+    height: 180,
+    backgroundColor: 'red',
+    borderRadius: 8,
+    marginVertical: 6,
+  },
+});

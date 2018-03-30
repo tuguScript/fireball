@@ -13,7 +13,7 @@ export default class Feed extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Button text="Go to Details" onPress={() => this.props.navigation.navigate('Details')} />
+        {/* <Button text="Go to Details" onPress={() => this.props.navigation.navigate('Details')} /> */}
 
         <Interactable.View
           style={styles.container}
