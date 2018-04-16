@@ -38,12 +38,7 @@ export default class Profile extends React.Component {
     return (
       <ScrollView style={styles.root}>
         <View style={[styles.header, styles.bordered]}>
-          <Image
-            style={styles.image}
-            source={{
-              uri: `${this.state.currentUser.photoURL}`,
-            }}
-          />
+          <Image style={styles.image} source={require('../img/profile-medium.png')} />
           <RkText rkType="header2">{this.state.currentUser.displayName}</RkText>
           <RkText rkType="header2">{this.state.currentUser.email}</RkText>
           <Button

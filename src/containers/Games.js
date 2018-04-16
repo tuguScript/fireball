@@ -92,8 +92,8 @@ export default class Games extends React.Component {
           animatedValueY={this._deltaY}
         >
           <View style={styles.content}>
-            <Row hour="09:00" text="Tuguldur vs Brian" />
-            <Row hour="10:20" text="Tugi vs Baatka" />
+            <Row hour="09:00" text="Tugi vs Brian" />
+            <Row hour="10:20" text="John Doe vs Tugi" />
             <Row hour="18:00" text="Baatka vs Mudku" />
           </View>
         </Interactable.View>
